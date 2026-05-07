@@ -139,6 +139,8 @@ def admin_dashboard():
 
         if is_role_ticket or is_disposisi_masuk or is_disposisi_keluar:
             t["riwayat_pesan"] = logs
+            reporter = db.get_user_by_id(t.get("ticket_by_user_id"))
+            t["pengadu_nama"] = reporter.nama if reporter else "-"
             tiket_terkait.append(t)
 
     return render_template("admin_dashboard.html", tiket_terkait=tiket_terkait)

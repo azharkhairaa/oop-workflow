@@ -19,7 +19,7 @@
                             <option value="">Semua Status</option>
                             <option value="Aduan Masuk">Aduan Masuk</option>
                             <option value="Diproses">Diproses</option>
-                            <option value="Menunggu tanggapan Anda">Menunggu tanggapan Anda</option>
+                            <option value="Menunggu tanggapan Pelanggan">Menunggu tanggapan Pelanggan</option>
                             <option value="Disposisi">Disposisi</option>
                             <option value="Aduan selesai">Aduan selesai</option>
                         </select>
@@ -49,11 +49,14 @@
                             <tr class="ticket-row" data-ticket-number="{{ tiket.ticket_number }}"
                                 data-status="{{ tiket.status }}" data-kategori="{{ tiket.jenis_pengaduan }}"
                                 data-uraian="{{ tiket.uraian }}" data-created-at="{{ tiket.created_at }}"
+                                data-pengadu-nama="{{ tiket.pengadu_nama }}"
                                 data-logs='{{ tiket.riwayat_pesan | tojson }}'>
                                 <td>
                                     <div class="fw-bold">{{ tiket.ticket_number }}</div>
                                     <div class="text-muted" style="font-size: 0.85rem;">{{ tiket.jenis_pengaduan }}
                                     </div>
+                                    <div class="text-muted" style="font-size: 0.85rem;">Pengadu: {{ tiket.pengadu_nama
+                                        }}</div>
                                 </td>
                                 <td><span class="badge bg-info text-dark">{{ tiket.status }}</span></td>
                                 <td class="text-muted" style="font-size: 0.9rem;">{{ tiket.created_at }}</td>
@@ -80,6 +83,7 @@
                 <div id="detail-empty" class="text-muted">Belum ada tiket yang dipilih.</div>
 
                 <div id="detail-content" class="d-none">
+                    <p><strong>Pengadu:</strong> <span id="detail-pengadu"></span></p>
                     <p><strong>Uraian:</strong> <span id="detail-uraian"></span></p>
 
                     <hr>
@@ -135,6 +139,7 @@
     const detailTitle = document.getElementById('detail-title');
     const detailStatus = document.getElementById('detail-status');
     const detailUraian = document.getElementById('detail-uraian');
+    const detailPengadu = document.getElementById('detail-pengadu');
     const detailLogs = document.getElementById('detail-logs');
     const detailTicketNumber = document.getElementById('detail-ticket-number');
     const detailCurrentStatus = document.getElementById('detail-current-status');
@@ -171,10 +176,12 @@
         const status = row.dataset.status || '-';
         const kategori = row.dataset.kategori || '-';
         const uraian = row.dataset.uraian || '-';
+        const pengadu = row.dataset.pengaduNama || '-';
         const logs = row.dataset.logs ? JSON.parse(row.dataset.logs) : [];
 
         detailTitle.textContent = `${ticketNumber} | ${kategori}`;
         detailStatus.textContent = `Status: ${status}`;
+        detailPengadu.textContent = pengadu;
         detailUraian.textContent = uraian;
         detailTicketNumber.value = ticketNumber;
         detailCurrentStatus.value = status;
