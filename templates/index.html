@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <!-- Form Login -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3>Login</h3>
+                <form method="POST">
+                    <input type="hidden" name="action" value="login">
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Masuk</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Registrasi -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3>Registrasi Klien</h3>
+                <form method="POST">
+                    <input type="hidden" name="action" value="register">
+                    <div class="mb-3">
+                        <label>Nama Lengkap</label>
+                        <input type="text" name="nama" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Daftar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

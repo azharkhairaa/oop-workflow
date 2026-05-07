@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="text-center mb-4">🔍 Publik Ticket Tracker</h2>
+
+        <form method="POST" class="d-flex mb-5">
+            <input type="text" name="ticket_number" class="form-control me-2"
+                placeholder="Masukkan Nomor Tiket (Misal: TIX-2026...)" required>
+            <button type="submit" class="btn btn-primary">Lacak</button>
+        </form>
+
+        {% if tiket %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h4>Status: {{ tiket.status }}</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Kategori:</strong> {{ tiket.jenis_pengaduan }}</p>
+                <p><strong>Waktu Dibuat:</strong> {{ tiket.created_at }}</p>
+
+                <hr>
+                <h5>Riwayat Log (Audit Trail)</h5>
+                <ul class="list-group list-group-flush">
+                    {% for log in logs %}
+                    <li class="list-group-item">
+                        <small class="text-muted">[{{ log.created_at }}]</small><br>
+                        <strong>{{ log.status_sebelumnya }} ➡️ {{ log.status_baru }}</strong><br>
+                        Pesan: <em>{{ log.pesan }}</em>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

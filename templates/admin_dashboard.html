@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard Admin - {{ session.user_role }}</h2>
+<hr>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="mb-3">Daftar Aduan</h5>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-12">
+                        <input type="text" id="filter-keyword" class="form-control"
+                            placeholder="Cari nomor tiket atau uraian...">
+                    </div>
+                    <div class="col-6">
+                        <select id="filter-status" class="form-select">
+                            <option value="">Semua Status</option>
+                            <option value="Aduan Masuk">Aduan Masuk</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Menunggu tanggapan Anda">Menunggu tanggapan Anda</option>
+                            <option value="Disposisi">Disposisi</option>
+                            <option value="Aduan selesai">Aduan selesai</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <input type="date" id="filter-date-from" class="form-control" placeholder="Dari">
+                    </div>
+                    <div class="col-6">
+                        <input type="date" id="filter-date-to" class="form-control" placeholder="Sampai">
+                    </div>
+                    <div class="col-6 d-grid">
+                        <button type="button" class="btn btn-outline-secondary" id="filter-reset">Reset</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 520px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0" id="ticket-table">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>No. Tiket</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tiket in tiket_terkait %}
+                            <tr class="ticket-row" data-ticket-number="{{ tiket.ticket_number }}"
+                                data-status="{{ tiket.status }}" data-kategori="{{ tiket.jenis_pengaduan }}"
+                                data-uraian="{{ tiket.uraian }}" data-created-at="{{ tiket.created_at }}"
+                                data-logs='{{ tiket.riwayat_pesan | tojson }}'>
+                                <td>
+                                    <div class="fw-bold">{{ tiket.ticket_number }}</div>
+                                    <div class="text-muted" style="font-size: 0.85rem;">{{ tiket.jenis_pengaduan }}
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-info text-dark">{{ tiket.status }}</span></td>
+                                <td class="text-muted" style="font-size: 0.9rem;">{{ tiket.created_at }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-muted">Belum ada tiket.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-primary" id="detail-card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
+                <strong id="detail-title">Pilih tiket untuk melihat detail</strong>
+                <span id="detail-status"></span>
+            </div>
+            <div class="card-body">
+                <div id="detail-empty" class="text-muted">Belum ada tiket yang dipilih.</div>
+
+                <div id="detail-content" class="d-none">
+                    <p><strong>Uraian:</strong> <span id="detail-uraian"></span></p>
+
+                    <hr>
+                    <h6 class="text-primary mb-2">Riwayat Tindakan & Pesan:</h6>
+                    <div class="border rounded p-3 mb-3 bg-white" style="max-height: 250px; overflow-y: auto;"
+                        id="detail-logs">
+                    </div>
+
+                    <form method="POST" class="mt-3 bg-light p-3 border rounded">
+                        <input type="hidden" name="ticket_number" id="detail-ticket-number">
+                        <input type="hidden" name="current_status" id="detail-current-status">
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Aksi Workflow:</label>
+
+                                <select name="tindakan" class="form-select" id="detail-tindakan" required>
+                                    <option value="TINDAK_LANJUT">Tindak Lanjut (Proses)</option>
+                                    <option value="TANYA_USER">Tanya User (Konfirmasi)</option>
+                                    <option value="DISPOSISI">Disposisi ke Divisi Lain</option>
+                                    <option value="SELESAI">Selesaikan Tiket</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3" id="divisi-container" style="display: none;">
+                                <label>Divisi Tujuan:</label>
+                                <select name="divisi_tujuan" class="form-select">
+                                    <option value="Customer Service">Customer Service</option>
+                                    <option value="Technical Support">Technical Support</option>
+                                    <option value="Billing">Billing</option>
+                                    <option value="Security">Security</option>
+                                    <option value="Sales">Sales</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Pesan/Catatan Log:</label>
+                            <textarea name="pesan" class="form-control" rows="3"
+                                placeholder="Tuliskan detail tindakan, balasan untuk klien, atau alasan disposisi di sini..."
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">Eksekusi Status</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const rows = Array.from(document.querySelectorAll('.ticket-row'));
+    const detailTitle = document.getElementById('detail-title');
+    const detailStatus = document.getElementById('detail-status');
+    const detailUraian = document.getElementById('detail-uraian');
+    const detailLogs = document.getElementById('detail-logs');
+    const detailTicketNumber = document.getElementById('detail-ticket-number');
+    const detailCurrentStatus = document.getElementById('detail-current-status');
+    const detailEmpty = document.getElementById('detail-empty');
+    const detailContent = document.getElementById('detail-content');
+    const tindakanSelect = document.getElementById('detail-tindakan');
+    const divisiContainer = document.getElementById('divisi-container');
+
+    function renderLogs(logs) {
+        if (!logs || logs.length === 0) {
+            detailLogs.innerHTML = '<div class="text-muted">Belum ada riwayat pesan.</div>';
+            return;
+        }
+
+        const html = logs.map((log) => {
+            const createdAt = log.created_at ? `[${log.created_at}]<br>` : '';
+            return `
+                <div class="mb-2 pb-2 border-bottom">
+                    <small class="text-muted">${createdAt}</small>
+                    <span class="badge bg-secondary">${log.status_baru || '-'}</span>
+                    <span class="ms-2"><em>${log.pesan || '-'}</em></span>
+                </div>
+            `;
+        }).join('');
+
+        detailLogs.innerHTML = html;
+    }
+
+    function selectRow(row) {
+        rows.forEach((r) => r.classList.remove('table-primary'));
+        row.classList.add('table-primary');
+
+        const ticketNumber = row.dataset.ticketNumber || '-';
+        const status = row.dataset.status || '-';
+        const kategori = row.dataset.kategori || '-';
+        const uraian = row.dataset.uraian || '-';
+        const logs = row.dataset.logs ? JSON.parse(row.dataset.logs) : [];
+
+        detailTitle.textContent = `${ticketNumber} | ${kategori}`;
+        detailStatus.textContent = `Status: ${status}`;
+        detailUraian.textContent = uraian;
+        detailTicketNumber.value = ticketNumber;
+        detailCurrentStatus.value = status;
+
+        renderLogs(logs);
+
+        detailEmpty.classList.add('d-none');
+        detailContent.classList.remove('d-none');
+    }
+
+    function applyFilters() {
+        const keyword = document.getElementById('filter-keyword').value.toLowerCase();
+        const status = document.getElementById('filter-status').value;
+        const dateFrom = document.getElementById('filter-date-from').value;
+        const dateTo = document.getElementById('filter-date-to').value;
+
+        rows.forEach((row) => {
+            const rowStatus = row.dataset.status || '';
+            const rowTicket = row.dataset.ticketNumber || '';
+            const rowUraian = row.dataset.uraian || '';
+            const rowCreated = (row.dataset.createdAt || '').slice(0, 10);
+
+            const keywordMatch = (rowTicket + ' ' + rowUraian).toLowerCase().includes(keyword);
+            const statusMatch = !status || rowStatus === status;
+            const fromMatch = !dateFrom || (rowCreated && rowCreated >= dateFrom);
+            const toMatch = !dateTo || (rowCreated && rowCreated <= dateTo);
+
+            row.style.display = keywordMatch && statusMatch && fromMatch && toMatch ? '' : 'none';
+        });
+    }
+
+    function toggleDivisi() {
+        if (tindakanSelect.value === 'DISPOSISI') {
+            divisiContainer.style.display = 'block';
+        } else {
+            divisiContainer.style.display = 'none';
+        }
+    }
+
+    rows.forEach((row) => {
+        row.addEventListener('click', () => selectRow(row));
+    });
+
+    document.getElementById('filter-keyword').addEventListener('input', applyFilters);
+    document.getElementById('filter-status').addEventListener('change', applyFilters);
+    document.getElementById('filter-date-from').addEventListener('change', applyFilters);
+    document.getElementById('filter-date-to').addEventListener('change', applyFilters);
+    document.getElementById('filter-reset').addEventListener('click', () => {
+        document.getElementById('filter-keyword').value = '';
+        document.getElementById('filter-status').value = '';
+        document.getElementById('filter-date-from').value = '';
+        document.getElementById('filter-date-to').value = '';
+        applyFilters();
+    });
+
+    tindakanSelect.addEventListener('change', toggleDivisi);
+
+    if (rows.length > 0) {
+        selectRow(rows[0]);
+    }
+</script>
+{% endblock %}
