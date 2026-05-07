@@ -1,0 +1,7 @@
+flowchart TB
+    UI[UI (Templates)] --> Routes[app.py Routes]
+    Routes --> Workflow[workflow.py WorkflowEngine]
+    Workflow --> DB[database.py GoogleSheetManager]
+    DB --> Sheets[(Google Sheets)]
+    Workflow --> Models[models.py Ticket/User Models]
+    Models --> Workflow
