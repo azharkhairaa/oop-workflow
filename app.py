@@ -85,9 +85,12 @@ def client_dashboard():
     tiket_saya = []
     for t in semua_tiket:
         if str(t["ticket_by_user_id"]) == str(session["user_id"]):
-            t["riwayat_pesan"] = db.get_logs_by_ticket(t["ticket_number"])
+            logs = db.get_logs_by_ticket(t["ticket_number"])
+            for log in logs:
+                actor = db.get_user_by_id(log.get("actor_user_id"))
+                log["actor_nama"] = actor.nama if actor else "-"
+            t["riwayat_pesan"] = logs
             tiket_saya.append(t)
-            print(f"Logs for {t['ticket_number']}: {t['riwayat_pesan']}")
 
     return render_template("client_dashboard.html", tiket_saya=tiket_saya)
 
@@ -125,6 +128,9 @@ def admin_dashboard():
             continue
 
         logs = db.get_logs_by_ticket(t["ticket_number"])
+        for log in logs:
+            actor = db.get_user_by_id(log.get("actor_user_id"))
+            log["actor_nama"] = actor.nama if actor else "-"
         is_role_ticket = str(t.get("jenis_pengaduan")) == str(role_divisi)
         is_assigned_user = str(t.get("support_by_user_id")) == str(session["user_id"])
         is_disposisi_masuk = any(

@@ -156,9 +156,10 @@
 
         const html = logs.map((log) => {
             const createdAt = log.created_at ? `[${log.created_at}]<br>` : '';
+            const actorName = log.actor_nama || '-';
             return `
                 <div class="mb-2 pb-2 border-bottom">
-                    <small class="text-muted">${createdAt}</small>
+                    <small class="text-muted">${createdAt}Oleh: ${actorName}</small>
                     <span class="badge bg-secondary">${log.status_baru || '-'}</span>
                     <span class="ms-2"><em>${log.pesan || '-'}</em></span>
                 </div>
