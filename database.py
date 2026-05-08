@@ -53,7 +53,8 @@ class GoogleSheetManager:
         for idx, row in enumerate(records):
             if str(row["ticket_number"]) == str(ticket_number):
                 row_idx = idx + 2
-                ws.update_cell(row_idx, 4, str(support_id)) # support_by_user_id
+                if support_id is not None:
+                    ws.update_cell(row_idx, 4, str(support_id)) # support_by_user_id
                 ws.update_cell(row_idx, 8, str(new_status)) # status
                 ws.update_cell(row_idx, 11, str(current_time_str)) # updated_at
                 break

@@ -40,6 +40,7 @@ class WorkflowEngine:
     def process_action(self, ticket_number, action_type, actor_id, current_status, pesan, target_divisi=None, actor_role=None):
         new_status = current_status
         waktu_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        support_id = actor_id
 
         # Routing State berdasar aksi
         if action_type == "TINDAK_LANJUT":
@@ -48,15 +49,17 @@ class WorkflowEngine:
             new_status = "Disposisi"
             role_label = actor_role or "-"
             pesan = f"Disposisi dari divisi {role_label} ke divisi {target_divisi}. Pesan: {pesan}"
+            support_id = target_divisi
         elif action_type == "TANYA_USER":
             new_status = "Menunggu tanggapan Pelanggan"
         elif action_type == "BALASAN_USER":
             new_status = "Menunggu tanggapan Admin"
+            support_id = None
         elif action_type == "SELESAI":
             new_status = "Aduan selesai"
 
         # Update DB
-        self.db.update_ticket_db(ticket_number, actor_id, new_status, waktu_sekarang)
+        self.db.update_ticket_db(ticket_number, support_id, new_status, waktu_sekarang)
         
         # Rekam Log
         log = LogEntry(ticket_number, actor_id, current_status, new_status, pesan)
