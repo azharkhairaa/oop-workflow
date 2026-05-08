@@ -12,6 +12,8 @@ Sistem menggunakan pemisahan tanggung jawab yang mirip MVC:
 - **Data Access:** `database.py` mengabstraksi operasi CRUD ke Google Sheets.
 - **Views:** template HTML di folder `templates/`.
 
+```text
+.
 ├── app.py
 ├── database.py
 ├── docs
@@ -27,7 +29,8 @@ Sistem menggunakan pemisahan tanggung jawab yang mirip MVC:
 │   ├── client_dashboard.html
 │   ├── index.html
 │   └── tracker.html
-├── workflow
+└── workflow.py
+```
 
 Alur data (tingkat tinggi):
 
