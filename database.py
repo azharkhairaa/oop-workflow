@@ -69,8 +69,8 @@ class GoogleSheetManager:
     def insert_log(self, log):
         ws = self.sheet.worksheet("pengaduan_log")
         ws.append_row([
-            log.log_id, log.ticket_number, log.actor_user_id,
-            log.status_sebelumnya, log.status_baru, log.pesan, log.created_at
+            log.log_id, log.ticket_number, log.status, log.actor_user_id,
+            log.status_sebelumnya, log.status_baru, log.pesan, log.created_at, log.status_by
         ])
         
     def get_logs_by_ticket(self, ticket_number):
