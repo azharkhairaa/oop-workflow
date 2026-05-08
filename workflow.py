@@ -49,7 +49,8 @@ class WorkflowEngine:
             new_status = "Disposisi"
             role_label = actor_role or "-"
             pesan = f"Disposisi dari divisi {role_label} ke divisi {target_divisi}. Pesan: {pesan}"
-            support_id = target_divisi
+            target_user = self.db.get_user_by_role(target_divisi) if target_divisi else None
+            support_id = target_user.user_id if target_user else None
         elif action_type == "TANYA_USER":
             new_status = "Menunggu tanggapan Pelanggan"
         elif action_type == "BALASAN_USER":

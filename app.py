@@ -126,6 +126,7 @@ def admin_dashboard():
 
         logs = db.get_logs_by_ticket(t["ticket_number"])
         is_role_ticket = str(t.get("jenis_pengaduan")) == str(role_divisi)
+        is_assigned_user = str(t.get("support_by_user_id")) == str(session["user_id"])
         is_disposisi_masuk = any(
             (log.get("status_baru") == "Disposisi")
             and (f"Disposisi ke divisi {role_divisi}" in str(log.get("pesan", "")))
@@ -137,7 +138,7 @@ def admin_dashboard():
             for log in logs
         )
 
-        if is_role_ticket or is_disposisi_masuk or is_disposisi_keluar:
+        if is_role_ticket or is_assigned_user or is_disposisi_masuk or is_disposisi_keluar:
             t["riwayat_pesan"] = logs
             reporter = db.get_user_by_id(t.get("ticket_by_user_id"))
             t["pengadu_nama"] = reporter.nama if reporter else "-"

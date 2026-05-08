@@ -30,6 +30,13 @@ class GoogleSheetManager:
                 return User(row["id"], row["nama"], row["email"], row["password"], row["role"])
         return None
 
+    def get_user_by_role(self, role):
+        ws = self.sheet.worksheet("users")
+        for row in ws.get_all_records():
+            if str(row["role"]) == str(role):
+                return User(row["id"], row["nama"], row["email"], row["password"], row["role"])
+        return None
+
     def insert_user(self, user):
         ws = self.sheet.worksheet("users")
         ws.append_row([user.user_id, user.nama, user.email, user.password, user.role])
