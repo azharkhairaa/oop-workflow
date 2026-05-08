@@ -31,6 +31,16 @@ Alur data (tingkat tinggi):
 - **Factory Pattern:** `TicketFactory.create()` memilih subclass tiket berdasarkan kategori.
 - **State-like Transition:** `WorkflowEngine.process_action()` memusatkan transisi status dan pencatatan log.
 
+## Implementasi Modularitas
+
+Modularitas diterapkan dengan memisahkan tanggung jawab ke beberapa modul:
+
+- `app.py` sebagai pengendali alur (routing, session, render view).
+- `models.py` sebagai representasi domain (User dan Ticket).
+- `workflow.py` sebagai logika bisnis dan transisi status.
+- `database.py` sebagai lapisan akses data ke Google Sheets.
+- `templates/` untuk tampilan UI.
+
 ## Cara Menjalankan
 
 1. Install dependensi:
