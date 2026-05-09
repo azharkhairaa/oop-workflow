@@ -13,6 +13,7 @@ Sistem menggunakan pemisahan tanggung jawab yang mirip MVC:
 - **Views:** template HTML di folder `templates/`.
 
 ```text
+project-oop
 ├── app.py
 ├── database.py
 ├── docs
