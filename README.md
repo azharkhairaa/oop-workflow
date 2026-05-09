@@ -23,11 +23,15 @@ project-oop
 ├── oop-workflow-2d369154a481.json
 ├── README.md
 ├── requirements.txt
+├── static
+│   ├── flowchart.png
+│   └── struktur-file.png
 ├── templates
 │   ├── admin_dashboard.html
 │   ├── base.html
 │   ├── client_dashboard.html
 │   ├── index.html
+│   ├── presentation.html
 │   └── tracker.html
 └── workflow.py
 ```
