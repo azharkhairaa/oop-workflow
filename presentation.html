@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Presentasi OOP Workflow Helpdesk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0e1420;
+            --muted: #4d596a;
+            --bg: #f7f3ea;
+            --accent: #2c7a7b;
+            --accent-2: #f2b705;
+            --card: #ffffff;
+            --code: #111827;
+            --shadow: 0 16px 50px rgba(14, 20, 32, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: radial-gradient(1200px 600px at 10% -10%, #ffe8b6 0%, transparent 60%),
+                radial-gradient(1200px 600px at 100% 0%, #cfe8e8 0%, transparent 60%),
+                var(--bg);
+            font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+        }
+
+        header {
+            padding: 64px 8vw 32px;
+        }
+
+        .title {
+            font-size: clamp(2.2rem, 4vw, 4rem);
+            line-height: 1.05;
+            margin: 0 0 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            color: var(--muted);
+            max-width: 860px;
+        }
+
+        main {
+            padding: 0 8vw 80px;
+            display: grid;
+            gap: 28px;
+        }
+
+        section {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        section::after {
+            content: "";
+            position: absolute;
+            inset: auto -40% -60% auto;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(44, 122, 123, 0.16), transparent 70%);
+            z-index: 0;
+        }
+
+        section>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            margin: 0 0 12px;
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            margin: 12px 0 8px;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(44, 122, 123, 0.12);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .code {
+            background: #0b1220;
+            color: #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+
+        .callout {
+            border-left: 4px solid var(--accent-2);
+            padding: 12px 16px;
+            background: #fff7da;
+            color: #6b4f00;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .flow-img {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            height: var(--flowchart-height, auto);
+            object-fit: contain;
+        }
+
+        .demo-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .demo-card {
+            background: #f8fafc;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        footer {
+            padding: 20px 8vw 60px;
+            color: var(--muted);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 720px) {
+            header {
+                padding: 44px 6vw 24px;
+            }
+
+            main {
+                padding: 0 6vw 60px;
+            }
+
+            section {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="pill">Sistem OOP Workflow</div>
+        <h1 class="title">Helpdesk Workflow berbasis Flask + Google Sheets</h1>
+        <p class="subtitle">Menyajikan ringkasan arsitektur, pilar OOP, design pattern, modularitas, dan contoh skenario
+            penggunaan pada aplikasi pengelolaan aduan.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Pembukaan dan Tentang Aplikasi</h2>
+            <p>Aplikasi ini mengelola aduan pelanggan secara end-to-end: mulai dari pembuatan tiket, penugasan admin
+                sesuai divisi, hingga pencatatan riwayat pesan. Data disimpan di Google Sheets sehingga ringan untuk
+                prototipe kelas dan mudah dipresentasikan.</p>
+            <div class="callout">Fokus utama: alur aduan yang jelas, pembagian peran (Client/Admin), dan pencatatan log
+                yang transparan.</div>
+        </section>
+
+        <section>
+            <h2>Arsitektur Sistem</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Pemisahan Tanggung Jawab</h3>
+                    <p>Lapisan tampilan, logika bisnis, dan akses data dipisahkan sehingga mudah dirawat.</p>
+                </div>
+                <div>
+                    <h3>Skala Proyek</h3>
+                    <p>Arsitektur ringan namun jelas: cocok untuk kebutuhan akademik dan mudah dikembangkan.</p>
+                </div>
+            </div>
+            <div class="code">app.py &rarr; routing dan session
+                models.py &rarr; entitas domain
+                workflow.py &rarr; alur bisnis dan transisi status
+                database.py &rarr; akses Google Sheets</div>
+        </section>
+
+        <section>
+            <h2>Penerapan Pilar OOP</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Encapsulation</h3>
+                    <p>Data tiket disembunyikan melalui atribut privat dan diakses via getter/setter.</p>
+                    <div class="code">class BaseTicket:
+                        def __init__(...):
+                        self._status = "Aduan Masuk"
+
+                        def get_status(self):
+                        return self._status
+
+                        def set_status(self, new_status):
+                        self._status = str(new_status)</div>
+                </div>
+                <div>
+                    <h3>Abstraction</h3>
+                    <p>BaseTicket menyediakan kontrak umum `get_kategori()` tanpa detail implementasi.</p>
+                    <div class="code">class BaseTicket:
+                        def get_kategori(self):
+                        pass</div>
+                </div>
+                <div>
+                    <h3>Inheritance</h3>
+                    <p>Setiap kategori tiket mewarisi BaseTicket untuk berbagi struktur data.</p>
+                    <div class="code">class TechTicket(BaseTicket):
+                        def get_kategori(self):
+                        return "Technical Support"</div>
+                </div>
+                <div>
+                    <h3>Polymorphism</h3>
+                    <p>Method `get_kategori()` di-override di tiap child class tetapi dipakai dengan cara yang sama.</p>
+                    <div class="code">ticket = TicketFactory.create(kategori, ...)
+                        kategori = ticket.get_kategori()</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Penggunaan Design Pattern</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Factory Pattern</h3>
+                    <p>Menghasilkan objek tiket sesuai kategori tanpa membeberkan kelas konkret.</p>
+                    <div class="code">class TicketFactory:
+                        @staticmethod
+                        def create(kategori, user_id, uraian, dokumen=""):
+                        if kategori == "Billing":
+                        return BillingTicket(...)</div>
+                </div>
+                <div>
+                    <h3>State-like Transition</h3>
+                    <p>Transisi status dipusatkan dalam satu tempat agar konsisten.</p>
+                    <div class="code">if action_type == "DISPOSISI":
+                        new_status = "Disposisi"
+                        elif action_type == "SELESAI":
+                        new_status = "Aduan selesai"</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Implementasi Modularitas</h2>
+            <p>Setiap modul memiliki peran yang jelas, sehingga perubahan dapat dilakukan tanpa merusak bagian lain.</p>
+            <div class="grid-2">
+                <div class="demo-card">
+                    <strong>app.py</strong> &ndash; kontrol alur, session, dan routing
+                </div>
+                <div class="demo-card">
+                    <strong>models.py</strong> &ndash; definisi entitas domain
+                </div>
+                <div class="demo-card">
+                    <strong>workflow.py</strong> &ndash; logika transisi status
+                </div>
+                <div class="demo-card">
+                    <strong>database.py</strong> &ndash; akses data Google Sheets
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Flow App</h2>
+            <p>Diagram berikut menunjukkan alur data utama dari UI hingga penyimpanan log.</p>
+            <img src="flowchart.png" alt="Flowchart aplikasi" class="flow-img" style="--flowchart-height: 800px;">
+        </section>
+
+        <section>
+            <h2>Demo Skenario</h2>
+            <div class="demo-list">
+                <div class="demo-card">
+                    <h3>Demo Skenario 1</h3>
+                    <p>Client membuat tiket &rarr; tiket muncul di daftar admin divisi sesuai kategori.</p>
+                </div>
+                <div class="demo-card">
+                    <h3>Demo Skenario 2</h3>
+                    <p>Admin melakukan disposisi &rarr; tiket berpindah ke divisi tujuan dan log tercatat.</p>
+                </div>
+                <div class="demo-card">
+                    <h3>Demo Skenario 3</h3>
+                    <p>Admin meminta konfirmasi &rarr; client membalas &rarr; status kembali ke admin.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+
+</html>
