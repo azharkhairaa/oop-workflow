@@ -58,11 +58,7 @@ def logout():
 
 @app.route("/presentation")
 def presentation():
-    return send_from_directory(".", "presentation.html")
-
-@app.route("/flowchart.png")
-def presentation_flowchart():
-    return send_from_directory(".", "flowchart.png")
+    return render_template("presentation.html")
 
 @app.route("/client", methods=["GET", "POST"])
 def client_dashboard():
