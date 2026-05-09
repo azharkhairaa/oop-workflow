@@ -60,6 +60,10 @@ def logout():
 def presentation():
     return send_from_directory(".", "presentation.html")
 
+@app.route("/flowchart.png")
+def presentation_flowchart():
+    return send_from_directory(".", "flowchart.png")
+
 @app.route("/client", methods=["GET", "POST"])
 def client_dashboard():
     if "user_id" not in session or session["user_role"] != "Client":

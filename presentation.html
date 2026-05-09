@@ -121,6 +121,11 @@
             font-size: 0.85rem;
             line-height: 1.5;
             overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .code-line {
+            display: block;
         }
 
         .callout {
@@ -206,7 +211,7 @@
 
         <section>
             <h2>Arsitektur Sistem</h2>
-            <div class="grid-2">
+            <div class="grid-2" style="grid-template-columns: 1fr;">
                 <div>
                     <h3>Pemisahan Tanggung Jawab</h3>
                     <p>Lapisan tampilan, logika bisnis, dan akses data dipisahkan sehingga mudah dirawat.</p>
@@ -216,54 +221,64 @@
                     <p>Arsitektur ringan namun jelas: cocok untuk kebutuhan akademik dan mudah dikembangkan.</p>
                 </div>
             </div>
-            <div class="code">app.py &rarr; routing dan session
-                models.py &rarr; entitas domain
-                workflow.py &rarr; alur bisnis dan transisi status
-                database.py &rarr; akses Google Sheets</div>
+            <div class="code">
+                <span class="code-line">app.py &rarr; routing dan session</span>
+                <span class="code-line">models.py &rarr; entitas domain</span>
+                <span class="code-line">workflow.py &rarr; alur bisnis dan transisi status</span>
+                <span class="code-line">database.py &rarr; akses Google Sheets</span>
+            </div>
         </section>
 
         <section>
             <h2>Penerapan Pilar OOP</h2>
-            <div class="grid-2">
+            <div class="grid-2" style="grid-template-columns: 1fr;">
                 <div>
                     <h3>Encapsulation</h3>
                     <p>Data tiket disembunyikan melalui atribut privat dan diakses via getter/setter.</p>
-                    <div class="code">class BaseTicket:
-                        def __init__(...):
-                        self._status = "Aduan Masuk"
-
-                        def get_status(self):
-                        return self._status
-
-                        def set_status(self, new_status):
-                        self._status = str(new_status)</div>
+                    <div class="code">
+                        <span class="code-line">class BaseTicket:</span>
+                        <span class="code-line"> def __init__(...):</span>
+                        <span class="code-line"> self._status = "Aduan Masuk"</span>
+                        <span class="code-line"></span>
+                        <span class="code-line"> def get_status(self):</span>
+                        <span class="code-line"> return self._status</span>
+                        <span class="code-line"></span>
+                        <span class="code-line"> def set_status(self, new_status):</span>
+                        <span class="code-line"> self._status = str(new_status)</span>
+                    </div>
                 </div>
                 <div>
                     <h3>Abstraction</h3>
                     <p>BaseTicket menyediakan kontrak umum `get_kategori()` tanpa detail implementasi.</p>
-                    <div class="code">class BaseTicket:
-                        def get_kategori(self):
-                        pass</div>
+                    <div class="code">
+                        <span class="code-line">class BaseTicket:</span>
+                        <span class="code-line"> def get_kategori(self):</span>
+                        <span class="code-line"> pass</span>
+                    </div>
                 </div>
                 <div>
                     <h3>Inheritance</h3>
                     <p>Setiap kategori tiket mewarisi BaseTicket untuk berbagi struktur data.</p>
-                    <div class="code">class TechTicket(BaseTicket):
-                        def get_kategori(self):
-                        return "Technical Support"</div>
+                    <div class="code">
+                        <span class="code-line">class TechTicket(BaseTicket):</span>
+                        <span class="code-line"> def get_kategori(self):</span>
+                        <span class="code-line"> return "Technical Support"</span>
+                    </div>
                 </div>
                 <div>
                     <h3>Polymorphism</h3>
                     <p>Method `get_kategori()` di-override di tiap child class tetapi dipakai dengan cara yang sama.</p>
-                    <div class="code">ticket = TicketFactory.create(kategori, ...)
-                        kategori = ticket.get_kategori()</div>
+                    <div class="code">
+                        <span class="code-line">ticket = TicketFactory.create(kategori, ...)</span>
+                        <span class="code-line">kategori = ticket.get_kategori()</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section>
             <h2>Penggunaan Design Pattern</h2>
-            <div class="grid-2">
+            <div class="grid-2" style="grid-template-columns: 1fr;">
                 <div>
                     <h3>Factory Pattern</h3>
                     <p>Menghasilkan objek tiket sesuai kategori tanpa membeberkan kelas konkret.</p>
