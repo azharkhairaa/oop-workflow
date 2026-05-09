@@ -56,9 +56,9 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
-@app.route("/presentation")
+@app.route('/presentation')
 def presentation():
-    return render_template("presentation.html")
+    return render_template('presentation.html')
 
 @app.route("/client", methods=["GET", "POST"])
 def client_dashboard():
