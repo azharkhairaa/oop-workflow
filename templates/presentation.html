@@ -298,11 +298,14 @@
                 </div>
                 <div>
                     <h3>State-like Transition</h3>
-                    <p>Transisi status dipusatkan dalam satu tempat agar konsisten.</p>
-                    <div class="code">if action_type == "DISPOSISI":
-                        new_status = "Disposisi"
-                        elif action_type == "SELESAI":
-                        new_status = "Aduan selesai"</div>
+                    <p>State-like Transition: `WorkflowEngine.process_action()` memusatkan transisi status dan
+                        pencatatan log agar konsisten.</p>
+                    <div class="code">
+                        <span class="code-line">if action_type == "DISPOSISI":</span>
+                        <span class="code-line"> new_status = "Disposisi"</span>
+                        <span class="code-line">elif action_type == "SELESAI":</span>
+                        <span class="code-line"> new_status = "Aduan selesai"</span>
+                    </div>
                 </div>
             </div>
         </section>
