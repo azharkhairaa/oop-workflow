@@ -290,11 +290,13 @@
                 <div>
                     <h3>Factory Pattern</h3>
                     <p>Menghasilkan objek tiket sesuai kategori tanpa membeberkan kelas konkret.</p>
-                    <div class="code">class TicketFactory:
-                        @staticmethod
-                        def create(kategori, user_id, uraian, dokumen=""):
-                        if kategori == "Billing":
-                        return BillingTicket(...)</div>
+                    <div class="code">
+                        <span class="code-line">class TicketFactory:</span>
+                        <span class="code-line"> @staticmethod</span>
+                        <span class="code-line"> def create(kategori, user_id, uraian, dokumen=""):</span>
+                        <span class="code-line"> if kategori == "Billing":</span>
+                        <span class="code-line"> return BillingTicket(...)</span>
+                    </div>
                 </div>
                 <div>
                     <h3>State-like Transition</h3>
