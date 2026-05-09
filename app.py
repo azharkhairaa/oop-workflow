@@ -1,5 +1,5 @@
 # File: app.py
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 from database import GoogleSheetManager
 from workflow import WorkflowEngine
 from models import User
@@ -55,6 +55,10 @@ def index():
 def logout():
     session.clear()
     return redirect(url_for("index"))
+
+@app.route("/presentation")
+def presentation():
+    return send_from_directory(".", "presentation.html")
 
 @app.route("/client", methods=["GET", "POST"])
 def client_dashboard():
